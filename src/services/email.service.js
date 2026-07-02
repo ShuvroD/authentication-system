@@ -3,15 +3,19 @@ import config from '../config/config.js';
 
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    family: 4,
     auth: {
-        type: 'OAuth2',
+        type: "OAuth2",
         user: config.GOOGLE_USER,
         clientId: config.GOOGLE_CLIENT_ID,
         clientSecret: config.GOOGLE_CLIENT_SECRET,
         refreshToken: config.GOOGLE_REFRESH_TOKEN
     }
-})
+});
+
 
 
 // Verify the connection configuration
@@ -36,6 +40,7 @@ export const sendEmail = async (to, subject, text, html) => {
         console.log('Message sent: %s', info.messageId);
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     } catch (error) {
-        console.error('Error sending email:', error);
-    }
+    console.error("Error sending email:", error);
+    throw error;
+}
 };
