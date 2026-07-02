@@ -3,16 +3,19 @@ import config from '../config/config.js';
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "142.250.4.109",
     port: 587,
     secure: false,
-    family: 4,
+    requireTLS: true,
     auth: {
         type: "OAuth2",
         user: config.GOOGLE_USER,
         clientId: config.GOOGLE_CLIENT_ID,
         clientSecret: config.GOOGLE_CLIENT_SECRET,
         refreshToken: config.GOOGLE_REFRESH_TOKEN
+    },
+    tls: {
+        servername: "smtp.gmail.com"
     }
 });
 
