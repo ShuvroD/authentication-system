@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import config from '../config/config.js';
-
+import { Resend } from "resend";
 
 const transporter = nodemailer.createTransport({
     host: "142.250.4.109",
@@ -30,20 +30,16 @@ transporter.verify((error, success) => {
     }
 });
 
-export const sendEmail = async (to, subject, text, html) => {
-    try {
-        const info = await transporter.sendMail({
-            from: `"Your Name" <${config.GOOGLE_USER}>`, // sender address
-            to, // list of receivers
-            subject, // Subject line
-            text, // plain text body
-            html, // html body
-        });
 
-        console.log('Message sent: %s', info.messageId);
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    } catch (error) {
-    console.error("Error sending email:", error);
-    throw error;
-}
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function sendEmail(to, subject, text, html) {
+    return await resend.emails.send({
+        from: "onboarding@resend.dev",
+        to,
+        subject,
+        text,
+        html
+    });
 };
