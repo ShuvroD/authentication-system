@@ -42,7 +42,13 @@ export async function register(req,res){
         otpHash
     })
 
-    await sendEmail(email,otp)
+
+await sendEmail(
+    email,
+    "Your OTP Verification Code",
+    `Your OTP is ${otp}`,
+    getOtpHtml(otp)
+);
 
     
     res.status(201).json({
